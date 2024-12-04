@@ -15,3 +15,8 @@ void UAuraWidgetController::BroadcastInitialValues()
 {
 	//Derived class function
 }
+
+void UAuraWidgetController::BindCallbacksToDependencies()
+{
+	//Derived class function
+}
