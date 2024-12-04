@@ -22,7 +22,7 @@ public:
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 	/** end Enemy Interface */
-	// Boolean for Debuging
+	// Boolean for Debugging
 	// UPROPERTY(BlueprintReadOnly)
 	// bool bHighlighted = false;
 	
