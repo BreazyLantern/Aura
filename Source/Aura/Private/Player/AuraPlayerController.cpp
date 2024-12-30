@@ -12,6 +12,10 @@
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
+#define SWITCH_USECASE true
+
+
+
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -68,11 +72,16 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 		bTargeting = ThisActor ? true : false;
 		bAutoRunning = false;
 	}
-	
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+#if SWITCH_USECASE == false
+	if (GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagReleased(InputTag);
+#endif
+
+#if SWITCH_USECASE == true
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
@@ -101,18 +110,25 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 		FollowTime = 0.f;
 		bTargeting = false;
 	}
+#endif
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
+#if SWITCH_USECASE == false
+	if (GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagHeld(InputTag);
+#endif
+	
+#if SWITCH_USECASE == true
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 	if (bTargeting)
 	{
-		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{
@@ -126,13 +142,15 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 			ControlledPawn->AddMovementInput(WorldDirection);
 		}
 	}
+#endif
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 {
 	if (AuraAbilitySystemComponent == nullptr)
 	{
-		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+		AuraAbilitySystemComponent =
+			Cast<UAuraAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return AuraAbilitySystemComponent;
 }
