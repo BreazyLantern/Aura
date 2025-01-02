@@ -16,6 +16,7 @@ public:
 	static const FAuraGameplayTags& Get() {return GameplayTags; }
 	static void InitializeNativeGameplayTags();
 
+	/* Attributes*/
 	FGameplayTag Attributes_Primary_Strength;
 	FGameplayTag Attributes_Primary_Intelligence;
 	FGameplayTag Attributes_Primary_Resilience;
@@ -31,15 +32,22 @@ public:
 	FGameplayTag Attributes_Secondary_ManaRegeneration;
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
+	/* End of Attributes*/
 
+	/* Inputs*/
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_1;
 	FGameplayTag InputTag_2;
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
+	/* End of Inputs*/
 
+	/* Character Effects Tags*/
 	FGameplayTag Damage;
+
+	FGameplayTag Effects_HitReact;
+	
 protected:
 	
 private:
