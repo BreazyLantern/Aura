@@ -74,7 +74,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	float TargetBlockChance = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().BlockChanceDef, EvaluateParameters, TargetBlockChance);
-	TargetBlockChance = FMath::Max<float>(Damage, 0.f);
+	TargetBlockChance = FMath::Max<float>(TargetBlockChance, 0.f);
 	
 	const bool bBlocked = FMath::RandRange(1, 100) < TargetBlockChance;
 
