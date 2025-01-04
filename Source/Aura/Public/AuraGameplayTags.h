@@ -60,6 +60,8 @@ public:
 	FGameplayTag Damage_Physical;
 	/* End of Damage Types*/
 
+	FGameplayTag Abilities_Attack;
+
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 	
 	/* Character Effects Tags*/
