@@ -152,3 +152,17 @@ void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldC
 	}
 	
 }
+
+bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
+{
+	/* Mostly made this particular way for debugging purposes and to be specific about what each actor has for tags*/
+	const bool bFirstIsPlayer = FirstActor->ActorHasTag(FName("Player"));
+	const bool bSecondIsPlayer = SecondActor->ActorHasTag(FName("Player"));
+	const bool bFirstIsEnemy = FirstActor->ActorHasTag(FName("Enemy"));
+	const bool bSecondIsEnemy = SecondActor->ActorHasTag(FName("Enemy"));
+
+	const bool bBothArePlayer = bFirstIsPlayer && bSecondIsPlayer;
+	const bool bBothAreEnemies = bFirstIsEnemy && bSecondIsEnemy;
+	const bool bFriends = bBothArePlayer || bBothAreEnemies;
+	return !bFriends;
+}
