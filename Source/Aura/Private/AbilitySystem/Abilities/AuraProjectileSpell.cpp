@@ -7,6 +7,8 @@
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
 #include "Aura/Public/AuraGameplayTags.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -29,7 +31,6 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 	
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);
-	SpawnTransform.SetRotation(Rotation.Quaternion());
 		
 	AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
 		ProjectileClass,
@@ -38,6 +39,22 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		Cast<APawn>(GetOwningActorFromActorInfo()),
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
+	const float GravityZ = Projectile->ProjectileMovement.Get()->GetGravityZ();
+	const float MaxSpeed = Projectile->ProjectileMovement.Get()->GetMaxSpeed();
+	FVector OutLaunchVelocity = FVector(0, 0, 0);
+
+	UGameplayStatics::FSuggestProjectileVelocityParameters VelocityParameters = UGameplayStatics::FSuggestProjectileVelocityParameters(this, SocketLocation, ProjectileTargetLocation, MaxSpeed);
+	VelocityParameters.OverrideGravityZ = GravityZ;
+	VelocityParameters.bDrawDebug = false;
+	VelocityParameters.TraceOption = ESuggestProjVelocityTraceOption::DoNotTrace;
+	if (UGameplayStatics::SuggestProjectileVelocity(VelocityParameters, OutLaunchVelocity))
+	{
+		Rotation = OutLaunchVelocity.GetSafeNormal().Rotation();
+	}
+	
+	SpawnTransform.SetRotation(Rotation.Quaternion());
+
+	
 	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
 	EffectContextHandle.SetAbility(this);
