@@ -6,6 +6,7 @@
 #include "AbilitySystem/Abilities/AuraGameplayAbility.h"
 #include "AuraSummonAbility.generated.h"
 
+
 /**
  * 
  */
@@ -31,7 +32,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Summoning")
 	float SpawnSpread = 90.f;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Summoning|Debug")
 	bool DebugLines = false;
 };
