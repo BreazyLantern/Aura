@@ -41,6 +41,9 @@ public:
 	FGameplayTag Attributes_Resistance_Physical;
 	/* End of Resistances*/
 
+	/* Meta*/
+	FGameplayTag Attributes_Meta_IncomingXP;
+	
 	/* Inputs*/
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
