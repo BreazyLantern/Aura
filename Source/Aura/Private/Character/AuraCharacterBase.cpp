@@ -178,6 +178,11 @@ void AAuraCharacterBase::DecrementMinionCount_Implementation(const int32 Amount)
 	if (MinionCount < 0) MinionCount = 0;
 }
 
+ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
+{
+	return CharacterClass;
+}
+
 int32 AAuraCharacterBase::GetMinionCount_Implementation()
 {
 	return MinionCount;
