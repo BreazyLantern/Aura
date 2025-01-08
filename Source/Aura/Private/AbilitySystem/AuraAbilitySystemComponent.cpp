@@ -33,7 +33,7 @@ void UAuraAbilitySystemComponent::AddCharacterPassiveAbilities(
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupPassiveAbilities)
 	{		
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		GiveAbility(AbilitySpec);
+		GiveAbilityAndActivateOnce(AbilitySpec);
 	}
 }
 

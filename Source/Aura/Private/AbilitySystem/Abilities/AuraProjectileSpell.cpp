@@ -9,6 +9,7 @@
 #include "Aura/Public/AuraGameplayTags.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -28,6 +29,9 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		GetAvatarActorFromActorInfo(),
 		SocketTag);
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+	Rotation = UKismetMathLibrary::FindLookAtRotation(SocketLocation, ProjectileTargetLocation);
+	
+	//DrawDebugDirectionalArrow(GetWorld(), SocketLocation, ProjectileTargetLocation, 15.f , FColor::Red, false, 1.f);
 	
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);
@@ -47,7 +51,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 	VelocityParameters.OverrideGravityZ = GravityZ;
 	VelocityParameters.bDrawDebug = false;
 	VelocityParameters.TraceOption = ESuggestProjVelocityTraceOption::DoNotTrace;
-	if (UGameplayStatics::SuggestProjectileVelocity(VelocityParameters, OutLaunchVelocity))
+	if (GravityZ != 0 && UGameplayStatics::SuggestProjectileVelocity(VelocityParameters, OutLaunchVelocity))
 	{
 		Rotation = OutLaunchVelocity.GetSafeNormal().Rotation();
 	}
